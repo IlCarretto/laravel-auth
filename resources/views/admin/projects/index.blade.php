@@ -2,9 +2,14 @@
 
 @section('content')
     <div class="container">
-        <h2>I tuoi progetti</h2>
+        <h2 class="m-4">I tuoi progetti</h2>
+        <div class="add-project d-flex justify-content-end">
+            <a href="{{ route('admin.projects.create') }}">Aggiungi progetto</a>
+        </div>
+        {{-- @if (session('message'))
+        @endif --}}
         <div class="row justify-content-center">
-            <div class="col-8">
+            <div class="col-12">
                 <table class="table">
                     <thead>
                         <tr>

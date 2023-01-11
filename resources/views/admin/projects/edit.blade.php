@@ -2,18 +2,19 @@
 
 @section('content')
     <div class="container">
-        <h2 class="m-4">Crea nuovo progetto</h2>
+        <h2 class="m-4">Modifica il tuo progetto: {{ $project->title }}</h2>
         <div class="row justify-content-center">
             <div class="col-8">
-                <form action="{{ route('admin.projects.store') }}" method="POST">
+                <form action="{{ route('admin.projects.update', $project->slug) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="title-container">
                         <label for="title">Titolo del progetto</label>
                         <input
                             class="form-control @error('title')
                         is-invalid
                         @enderror""
-                            type="text" name="title" id="title" value="{{ old('title') }}"">
+                            type="text" name="title" id="title" value="{{ old('title', $project->title) }}"">
                         @error('title')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -25,7 +26,7 @@
                         <textarea name="proj_description" id="proj_description" rows="10"
                             class="form-control @error('proj_description')
                             is-invalid
-                            @enderror">{{ old('proj_description') }}</textarea>
+                            @enderror">{{ old('proj_description', $project->proj_description) }}</textarea>
                         @error('proj_description')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -36,5 +37,4 @@
                 </form>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection

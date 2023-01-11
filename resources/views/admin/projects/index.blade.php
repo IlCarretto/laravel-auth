@@ -6,8 +6,11 @@
         <div class="add-project d-flex justify-content-end">
             <a href="{{ route('admin.projects.create') }}">Aggiungi progetto</a>
         </div>
-        {{-- @if (session('message'))
-        @endif --}}
+        @if (session('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
         <div class="row justify-content-center">
             <div class="col-12">
                 <table class="table">
@@ -27,6 +30,15 @@
                                     <a class="btn btn-success" href="{{ route('admin.projects.show', $project->slug) }}">
                                         Details
                                     </a>
+                                    <a class="btn btn-warning" href="{{ route('admin.projects.edit', $project->slug) }}">
+                                        Edit</a>
+                                    <form action="{{ route('admin.projects.destroy', $project->slug) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger"
+                                            href="{{ route('admin.projects.index') }}">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

@@ -38,10 +38,10 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        $form_data = $request->all();
-        $form_data = Project::getSlug($form_data['title']);
+        $form_data = $request->validated();
+        $form_data['slug'] = Project::getSlug($form_data['title']);
         $project = Project::create($form_data);
-        return redirect()->name('admin.projects.index');
+        return redirect()->route('admin.projects.index')->with('message', 'Il progetto è stato creato con successo');
     }
 
     /**
@@ -63,7 +63,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -75,7 +75,10 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $form_data = $request->validated();
+        $form_data['slug'] = Project::getSlug($form_data['title']);
+        $project->update($form_data);
+        return redirect()->route('admin.projects.index')->with('message', 'Il progetto è stato aggiornato!');
     }
 
     /**
@@ -86,6 +89,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return redirect()->route('admin.projects.index')->with('message', 'Il progetto è stato eliminato');
     }
 }

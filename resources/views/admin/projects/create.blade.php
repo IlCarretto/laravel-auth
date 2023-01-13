@@ -5,7 +5,7 @@
         <h2 class="m-4">Crea nuovo progetto</h2>
         <div class="row justify-content-center">
             <div class="col-8">
-                <form action="{{ route('admin.projects.store') }}" method="POST">
+                <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="title-container">
                         <label for="title">Titolo del progetto</label>
@@ -15,6 +15,16 @@
                         @enderror""
                             type="text" name="title" id="title" value="{{ old('title') }}"">
                         @error('title')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="img-container">
+                        <label for="image">Inserisci il file dell'immagine</label>
+                        <input type="file" name="image" id="image"
+                            class="form-control @error('image') is-invalid @enderror">
+                        @error('image')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

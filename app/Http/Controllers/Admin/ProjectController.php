@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -40,8 +41,12 @@ class ProjectController extends Controller
     {
         $form_data = $request->validated();
         $form_data['slug'] = Project::getSlug($form_data['title']);
+        if ($request->hasFile('image')) {
+            $path = Storage::put('projects_images', $request->image);
+            $form_data['image'] = $path;
+        }
         $project = Project::create($form_data);
-        return redirect()->route('admin.projects.index')->with('message', 'Il progetto è stato creato con successo');
+        return redirect()->route('admin.projects.index')->with('message', "Il progetto $project->title è stato creato con successo");
     }
 
     /**
@@ -78,7 +83,7 @@ class ProjectController extends Controller
         $form_data = $request->validated();
         $form_data['slug'] = Project::getSlug($form_data['title']);
         $project->update($form_data);
-        return redirect()->route('admin.projects.index')->with('message', 'Il progetto è stato aggiornato!');
+        return redirect()->route('admin.projects.index')->with('message', "Il progetto $project->title è stato aggiornato!");
     }
 
     /**
@@ -90,6 +95,6 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect()->route('admin.projects.index')->with('message', 'Il progetto è stato eliminato');
+        return redirect()->route('admin.projects.index')->with('message', "Il progetto $project->title è stato eliminato");
     }
 }

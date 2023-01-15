@@ -29,7 +29,8 @@
                                 <td>{{ $project->created_at }}</td>
                                 <td>
                                     @if ($project->image)
-                                        <img src="{{ asset('storage/' . $project->image) }}" alt="" class="w-25">
+                                        <img src="{{ asset('storage/' . $project->image) }}" alt=""
+                                            class="index-img">
                                     @else
                                         Image not available
                                     @endif

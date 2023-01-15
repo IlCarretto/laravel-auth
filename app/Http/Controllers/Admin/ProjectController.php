@@ -82,6 +82,13 @@ class ProjectController extends Controller
     {
         $form_data = $request->validated();
         $form_data['slug'] = Project::getSlug($form_data['title']);
+        if ($request->hasFile('image')) {
+            if ($project->image) {
+                Storage::delete($project->image);
+            }
+            $path = Storage::put('projects_images', $request->image);
+            $form_data['image'] = $path;
+        }
         $project->update($form_data);
         return redirect()->route('admin.projects.index')->with('message', "Il progetto $project->title è stato aggiornato!");
     }

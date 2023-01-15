@@ -5,7 +5,8 @@
         <h2 class="m-4">Modifica il tuo progetto: {{ $project->title }}</h2>
         <div class="row justify-content-center">
             <div class="col-8">
-                <form action="{{ route('admin.projects.update', $project->slug) }}" method="POST">
+                <form action="{{ route('admin.projects.update', $project->slug) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="title-container">
@@ -20,6 +21,25 @@
                                 {{ $message }}
                             </div>
                         @enderror
+                    </div>
+                    <div class="image-container">
+                        <label for="image">Modifica l'immagine</label>
+                        <input type="file" name="image" id="image"
+                            class="form-control @error('image')
+                            is-invalid
+                        @enderror">
+                        @error('image')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="image-preview text-center">
+                        @if ($project->image)
+                            <img src="{{ asset('storage/' . $project->image) }}" alt="" class="w-25">
+                        @else
+                            <p class=mt-3>No images found yet</p>
+                        @endif
                     </div>
                     <div class="text-container">
                         <label for="proj_description">Descrizione del progetto</label>
